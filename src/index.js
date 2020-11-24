@@ -1,16 +1,20 @@
 const express = require('express');
 const routes = require('./routes');
-const dotenv = require('dotenv');
 
-dotenv.config();
+class App {
+    constructor(){
+        this.server = express();
+        this.routes();
+        this.middlewares();
+    }
 
-require('./database');
+    middlewares(){
+        this.server.use(express.json())
+    }
 
-const app = express();
+    routes(){
+        this.server.use(routes)
+    }
+}
 
-app.use(express.json());
-app.use(routes);
-
-app.listen(process.env.PORT);
-
-console.log(`OK porta ${process.env.PORT}`)
+module.exports = new App().server;
